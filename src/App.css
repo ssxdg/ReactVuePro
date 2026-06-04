@@ -1,0 +1,225 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.app-root {
+  height: 100vh;
+  background: var(--bg-primary);
+  transition: background-color 0.3s;
+}
+
+.app-layout {
+  height: 100vh;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  background: var(--bg-secondary) !important;
+  border-bottom: 1px solid var(--border-color);
+  height: 56px !important;
+  line-height: 56px !important;
+  transition: background-color 0.3s, border-color 0.3s;
+  z-index: 10;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.header-title {
+  margin: 0 !important;
+  font-size: 18px !important;
+  white-space: nowrap;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.app-sider {
+  border-right: 1px solid var(--border-color);
+  overflow-y: auto;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.app-sider .ant-menu {
+  border-inline-end: none !important;
+}
+
+.app-content {
+  padding: 24px;
+  overflow-y: auto;
+  background: var(--bg-primary) !important;
+  transition: background-color 0.3s;
+}
+
+/* Scrollbar 样式 */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+/* Skill Detail 样式 */
+.skill-detail {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.skill-header {
+  margin-bottom: 24px;
+}
+
+.skill-description {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin-top: 8px;
+}
+
+.skill-section {
+  margin-bottom: 32px;
+}
+
+.skill-section h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--color-primary, #4F46E5);
+  color: var(--text-primary);
+}
+
+.key-points-list {
+  list-style: none;
+  padding: 0;
+}
+
+.key-points-list li {
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  border-left: 3px solid var(--color-primary, #4F46E5);
+  font-size: 14px;
+  line-height: 1.6;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.code-playground {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.editor-tabs {
+  margin-bottom: 0;
+}
+
+.editor-pane {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+
+.preview-pane {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  min-height: 300px;
+  background: #fff;
+  transition: border-color 0.3s;
+}
+
+.preview-pane iframe {
+  width: 100%;
+  height: 300px;
+  border: none;
+  display: block;
+}
+
+/* Welcome 样式 */
+.welcome {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+  padding-top: 60px;
+}
+
+.welcome h1 {
+  font-size: 32px;
+  margin-bottom: 16px;
+}
+
+.welcome p {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin-bottom: 40px;
+}
+
+.welcome-categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  text-align: left;
+}
+
+.welcome-card {
+  padding: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.welcome-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border-color: var(--color-primary, #4F46E5);
+}
+
+.welcome-card h3 {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.welcome-card .skill-count {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+  .app-sider {
+    width: 200px !important;
+    max-width: 200px !important;
+    flex: 0 0 200px !important;
+  }
+  .welcome-categories {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
