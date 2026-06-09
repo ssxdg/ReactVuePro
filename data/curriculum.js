@@ -5,6 +5,7 @@ import { tsSkillContent as tsBaseSkills, tsCategory as tsBaseCategory } from './
 import { vue2SkillContent as vue2BaseSkills, vue2Category as vue2BaseCategory } from './skills/vue2.js';
 import { vue3SkillContent as vue3BaseSkills, vue3Category as vue3BaseCategory } from './skills/vue3.js';
 import { reactSkillContent as reactBaseSkills, reactCategory as reactBaseCategory } from './skills/react.js';
+import { htmlLessons } from './lessons/html.js';
 
 function skill(id, title, description, difficulty, options = {}) {
   return Object.assign({ id, title, description, difficulty }, options);
@@ -317,41 +318,129 @@ function defaultSnippet(module, item) {
   };
 }
 
+function buildStudyGuide(module, item) {
+  const focusMap = {
+    html: '文档结构、语义化、表单、可访问性',
+    css: '布局、盒模型、响应式、动效',
+    javascript: '运行机制、函数、对象、异步和 DOM',
+    typescript: '类型系统、泛型、高级类型和工程约束',
+    vue2: '响应式、组件通信、路由和状态管理',
+    vue3: 'Composition API、响应式系统和组合式复用',
+    react: 'JSX、Hooks、Context、路由和性能优化',
+    node: '运行时、接口服务、文件处理和部署',
+    engineering: '构建、规范、测试、发布和工程效率',
+    browser: '渲染、缓存、安全、性能和浏览器 API',
+    network: 'HTTP、缓存、跨域、实时通信和安全',
+    algorithm: '数据结构、搜索、排序、递归和动态规划',
+    interview: '高频问答、追问、项目表达和复盘'
+  };
+
+  const focus = focusMap[module.key] || module.label;
+  const overview = `${item.title} 是 ${module.label} 学习路径里的一个关键节点，核心不是“记住名词”，而是理解它解决什么问题、依赖什么前提、和相邻方案有什么边界。对于小白来说，最容易迷茫的地方通常不是语法本身，而是“什么时候用它”和“为什么这么设计”。`;
+  const howToUse = `${item.title} 通常出现在 ${focus} 这一类场景里。学习时不要只看结果，要顺着“输入是什么、输出是什么、它依赖哪些前置知识、失败时会发生什么”去看，这样才能把碎片知识串成完整理解。`;
+  const studySteps = [
+    `先读懂 ${item.title} 的定义和用途，不要急着记代码。`,
+    `再结合 ${module.label} 的真实场景看它如何工作，重点理解边界。`,
+    `最后做一个最小练习，确认自己能复述原理、能写出基础用法、也能说清常见误区。`
+  ];
+  const pitfalls = [
+    `不要把 ${item.title} 当成万能方案，它只适合特定边界内的问题。`,
+    `不要只背结论，必须能讲清“为什么是这样”以及“换一种写法会有什么后果”。`
+  ];
+  const practicePath = [
+    `先做一个最小可运行示例，确认 ${item.title} 的基础行为。`,
+    `再把示例扩展到实际业务场景，观察边界条件和异常情况。`
+  ];
+  const interviewFocus = [
+    `请说明 ${item.title} 的工作机制和适用边界。`,
+    `请比较 ${item.title} 和相邻方案的差异，以及为什么要选择它。`
+  ];
+
+  return { focus, overview, howToUse, studySteps, pitfalls, practicePath, interviewFocus };
+}
+
+function buildAnswerText(module, item, guide, type, index) {
+  const answerMap = {
+    quiz: [
+      `${item.title} 的作用是帮助你在 ${module.label} 场景中解决 ${guide.focus} 这一类问题。判断是否使用它，先看当前问题是否真的需要 ${item.title} 提供的能力，再看是否存在更简单的方案。`,
+      `${item.title} 的关键边界条件通常来自输入、输出、依赖前置知识和运行环境。学习时最重要的是能说清楚它适合什么，不适合什么。`,
+      `${item.title} 和相邻方案的区别，通常体现在适用场景、复杂度、可维护性和团队协作成本上。实际选择时应优先考虑业务目标和代码可维护性，而不是追求“看起来高级”的写法。`
+    ],
+    interview: [
+      `${item.title} 的核心原理可以概括为：它通过一套明确的规则或机制解决特定问题。回答时要先讲设计目标，再讲工作过程，最后讲边界和缺点。`,
+      `${item.title} 与相邻方案的差异，重点在适用场景、实现成本、性能影响和维护方式。面试里不要只背“它比别的好”，而要说明为什么在当前问题里选它。`
+    ]
+  };
+
+  const fallback = `${item.title} 的答案应该围绕“是什么、为什么、怎么用、边界在哪里”来展开。结合 ${module.label} 的上下文理解，会比单纯背诵结论更稳。`;
+  const items = answerMap[type] || [];
+  return items[index] || fallback;
+}
+
+function buildQuestionBank(module, item, guide) {
+  const quizQuestions = [
+    `什么问题会促使你使用 ${item.title}？`,
+    `${item.title} 的关键边界条件是什么？`,
+    `${item.title} 和相邻方案相比，优缺点是什么？`
+  ];
+
+  const interviewQuestions = [
+    `请说明 ${item.title} 的工作机制和适用边界。`,
+    `请比较 ${item.title} 和相邻方案的差异，以及为什么要选择它。`
+  ];
+
+  return {
+    quiz: quizQuestions.map(function(question, index) {
+      return {
+        question,
+        answer: buildAnswerText(module, item, guide, 'quiz', index)
+      };
+    }),
+    interview: interviewQuestions.map(function(question, index) {
+      return {
+        question,
+        answer: buildAnswerText(module, item, guide, 'interview', index)
+      };
+    })
+  };
+}
+
 function buildSkill(module, item) {
   const base = existingSkillContent[item.id];
+  const lesson = module.key === 'html' ? htmlLessons[item.id] : null;
+  const guide = buildStudyGuide(module, item);
+  const questionBank = buildQuestionBank(module, item, guide);
   const common = {
     moduleKey: module.key,
     moduleLabel: module.label,
     phase: module.phase,
     playground: module.playground,
-    learningGoals: [
-      `理解 ${item.title} 的核心定位`,
-      `能在 ${module.label} 场景中正确使用 ${item.title}`
+    learningGoals: lesson?.learningGoals || [
+      `理解 ${item.title} 在 ${module.label} 中的定位`,
+      `能说清 ${item.title} 的输入、输出和适用边界`,
+      `能把 ${item.title} 放进真实场景中使用`
     ],
-    keyPoints: [
-      `${item.title} 的核心概念`,
-      `${item.title} 的典型场景`,
-      `${item.title} 的常见误区`
+    prerequisites: lesson?.prerequisites || [
+      `先具备 ${focusOfModule(module.key)} 的基础认知`,
+      `再理解 ${module.label} 的整体上下文`
     ],
-    misconceptions: [
-      `不要把 ${item.title} 当作所有场景的默认解法`,
-      `需要先理解 ${module.label} 的上下文，再使用 ${item.title}`
+    keyPoints: lesson?.keyPoints || [
+      `${item.title} 的核心概念和作用`,
+      `${item.title} 的真实使用场景`,
+      `${item.title} 与相邻方案的边界`
     ],
-    practices: [
-      { title: `练习：${item.title}`, description: `围绕 ${item.title} 完成一个可验证的小任务。` }
+    misconceptions: lesson?.misconceptions || guide.pitfalls,
+    practices: lesson?.practices || [
+      { title: `练习 1：${item.title} 基础验证`, description: `先做一个最小示例，确认 ${item.title} 的核心行为。` },
+      { title: `练习 2：${item.title} 场景扩展`, description: `把示例扩展到真实业务场景，检查边界和异常。` }
     ],
-    refs: defaultRefs(module.key),
-    quiz: [
-      `${item.title} 的核心作用是什么？`,
-      `什么场景下应该优先考虑 ${item.title}？`
-    ],
-    interviewQuestions: [
-      `请解释 ${item.title} 的工作机制。`,
-      `说说 ${item.title} 和相关方案的区别。`
-    ],
+    refs: lesson?.refs || defaultRefs(module.key),
+    quiz: lesson?.quiz || questionBank.quiz,
+    interviewQuestions: lesson?.interviewQuestions || questionBank.interview,
     nextSkills: item.nextSkills || [],
-    detail: `本节聚焦 ${item.title}。学习时先理解它在 ${module.label} 中的定位，再结合示例、练习和误区进行掌握。`,
-    snippet: defaultSnippet(module, item)
+    detail: lesson?.detail || (base && base.detail ? base.detail : `${guide.overview}\n\n${guide.howToUse}\n\n${guide.studySteps.join('\n')}`),
+    studyGuide: guide,
+    snippet: lesson?.snippet || defaultSnippet(module, item)
   };
 
   if (!base) {
@@ -363,6 +452,25 @@ function buildSkill(module, item) {
   return Object.assign({}, base, common, {
     code: base.code || (module.playground === 'browser' ? { html: '<h1>Hello</h1>', css: 'h1{color:#4F46E5}', js: '' } : common.snippet)
   });
+}
+
+function focusOfModule(moduleKey) {
+  const map = {
+    html: 'HTML 文档结构与语义化',
+    css: 'CSS 选择器、盒模型和布局',
+    javascript: 'JavaScript 语言基础和异步机制',
+    typescript: 'TypeScript 类型系统',
+    vue2: 'Vue2 的响应式与组件基础',
+    vue3: 'Vue3 的 Composition API 与响应式',
+    react: 'React 组件与 Hooks',
+    node: 'Node.js 运行时基础',
+    engineering: '前端工程化',
+    browser: '浏览器原理',
+    network: '网络基础',
+    algorithm: '基础算法和数据结构',
+    interview: '面试表达与复盘'
+  };
+  return map[moduleKey] || '基础知识';
 }
 
 const skillContent = {};

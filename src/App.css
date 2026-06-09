@@ -117,6 +117,60 @@ body {
   color: var(--text-primary);
 }
 
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.guide-card {
+  padding: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background: var(--bg-card);
+}
+
+.guide-card h4 {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.guide-card-body {
+  color: var(--text-secondary);
+}
+
+.guide-card-body p:last-child {
+  margin-bottom: 0;
+}
+
+.qa-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.qa-card {
+  padding: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background: var(--bg-card);
+}
+
+.qa-question {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+
+.qa-answer {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  white-space: pre-wrap;
+}
+
 .key-points-list {
   list-style: none;
   padding: 0;

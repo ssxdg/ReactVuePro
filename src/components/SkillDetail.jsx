@@ -40,6 +40,37 @@ function SnippetView({ snippet }) {
   );
 }
 
+function GuideCard({ title, children }) {
+  return (
+    <div className='guide-card'>
+      <h4>{title}</h4>
+      <div className='guide-card-body'>{children}</div>
+    </div>
+  );
+}
+
+function renderQaList(items, emptyText) {
+  if (!items || items.length === 0) {
+    return <Text type='secondary'>{emptyText}</Text>;
+  }
+
+  return (
+    <div className='qa-list'>
+      {items.map(function(item, index) {
+        const question = typeof item === 'string' ? item : item.question;
+        const answer = typeof item === 'string' ? '' : item.answer;
+
+        return (
+          <div key={index} className='qa-card'>
+            <div className='qa-question'>Q{index + 1} · {question}</div>
+            {answer ? <div className='qa-answer'>A{index + 1} · {answer}</div> : <Text type='secondary'>暂无答案</Text>}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function SkillDetail({ skillId }) {
   const skill = useMemo(() => getSkill(skillId), [skillId]);
   const category = useMemo(() => getCategoryBySkillId(skillId), [skillId]);
@@ -88,6 +119,32 @@ export default function SkillDetail({ skillId }) {
         )}
       </div>
 
+      {skill.studyGuide && (
+        <div className='skill-section'>
+          <h3>📚 详细讲解</h3>
+          <div className='guide-grid'>
+            <GuideCard title='它是什么'>
+              <Paragraph>{skill.studyGuide.overview}</Paragraph>
+            </GuideCard>
+            <GuideCard title='什么时候用'>
+              <Paragraph>{skill.studyGuide.howToUse}</Paragraph>
+            </GuideCard>
+            <GuideCard title='怎么学'>
+              {renderList(skill.studyGuide.studySteps, '暂无学习步骤')}
+            </GuideCard>
+            <GuideCard title='常见误区'>
+              {renderList(skill.studyGuide.pitfalls, '暂无误区说明')}
+            </GuideCard>
+            <GuideCard title='练习路径'>
+              {renderList(skill.studyGuide.practicePath, '暂无练习路径')}
+            </GuideCard>
+            <GuideCard title='面试关注点'>
+              {renderList(skill.studyGuide.interviewFocus, '暂无面试关注点')}
+            </GuideCard>
+          </div>
+        </div>
+      )}
+
       <div className='skill-section'>
         <h3>🎯 学习目标</h3>
         {renderList(skill.learningGoals, '当前知识点尚未补全学习目标')}
@@ -126,12 +183,12 @@ export default function SkillDetail({ skillId }) {
 
       <div className='skill-section'>
         <h3>📝 自测题</h3>
-        {renderList(skill.quiz, '暂无自测题')}
+        {renderQaList(skill.quiz, '暂无自测题')}
       </div>
 
       <div className='skill-section'>
         <h3>🎤 面试追问</h3>
-        {renderList(skill.interviewQuestions, '暂无面试追问')}
+        {renderQaList(skill.interviewQuestions, '暂无面试追问')}
       </div>
 
       <div className='skill-section'>
