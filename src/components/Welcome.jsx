@@ -1,6 +1,7 @@
 ﻿import React from 'react';
 import { Card, Typography, Row, Col } from 'antd';
 import { Html5Outlined, FileTextOutlined, JavaScriptOutlined, CodeOutlined, ApiOutlined, ThunderboltOutlined, ExperimentOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { skillCategories } from '../../data/skillsData';
 
@@ -18,6 +19,7 @@ const iconMap = {
 
 export default function Welcome() {
   const { setCurrentSkill } = useApp();
+  const navigate = useNavigate();
 
   return (
     <div style={{ padding: 60, textAlign: 'center' }}>
@@ -29,7 +31,7 @@ export default function Welcome() {
         {skillCategories.map(function(cat) {
           return (
             <Col xs={24} sm={12} md={8} lg={6} key={cat.key}>
-              <Card hoverable onClick={function() { setCurrentSkill(cat.skills[0].id); }} style={{ textAlign: 'center', height: '100%' }}>
+              <Card hoverable onClick={function() { navigate('/skill/' + cat.skills[0].id); }} style={{ textAlign: 'center', height: '100%' }}>
                 <div style={{ marginBottom: 12 }}>{iconMap[cat.key] || <CodeOutlined style={{ fontSize: 32 }} />}</div>
                 <Card.Meta title={cat.label} description={cat.skills.length + ' 个技能点'} />
               </Card>
