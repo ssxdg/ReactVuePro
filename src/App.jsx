@@ -7,6 +7,7 @@ import { lightTheme, darkTheme, getCustomCSSVariables } from './theme';
 import Sidebar from './components/Sidebar';
 import SkillDetail from './components/SkillDetail';
 import Welcome from './components/Welcome';
+import { curriculumModules } from '../data/skillsData';
 import './App.css';
 
 const { Header, Sider, Content } = Layout;
@@ -18,15 +19,18 @@ function SkillPage() {
 }
 
 function AppContent() {
-  const { setCurrentSkill, isDark, toggleTheme } = useApp();
+  const { isDark, toggleTheme } = useApp();
   const cssVars = useMemo(() => getCustomCSSVariables(isDark), [isDark]);
+  const totalSkills = useMemo(() => curriculumModules.reduce(function(sum, module) {
+    return sum + module.skills.length;
+  }, 0), []);
 
   return (
     <div className='app-root' style={cssVars}>
       <Layout className='app-layout'>
         <Header className='app-header'>
           <div className='header-left'>
-            <Title level={4} className='header-title'>前端技能训练平台</Title>
+            <Title level={4} className='header-title'>前端技能训练平台 · {curriculumModules.length} 模块 / {totalSkills} 知识点</Title>
           </div>
           <div className='header-right'>
             <Switch checked={isDark} onChange={toggleTheme} checkedChildren={<MoonOutlined />} unCheckedChildren={<SunOutlined />} />

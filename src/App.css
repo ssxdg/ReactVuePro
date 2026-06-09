@@ -68,19 +68,19 @@ body {
   transition: background-color 0.3s;
 }
 
-/* Scrollbar 样式 */
 ::-webkit-scrollbar {
   width: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--border-color);
   border-radius: 3px;
 }
 
-/* Skill Detail 样式 */
 .skill-detail {
   max-width: 1200px;
   margin: 0 auto;
@@ -88,6 +88,13 @@ body {
 
 .skill-header {
   margin-bottom: 24px;
+}
+
+.skill-header-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
 }
 
 .skill-description {
@@ -127,6 +134,27 @@ body {
   transition: background-color 0.3s, border-color 0.3s;
 }
 
+.practice-card {
+  padding: 16px;
+  margin-bottom: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-left: 3px solid var(--color-primary, #4F46E5);
+  border-radius: 8px;
+}
+
+.practice-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.practice-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
 .code-playground {
   display: flex;
   flex-direction: column;
@@ -161,50 +189,135 @@ body {
   display: block;
 }
 
-/* Welcome 样式 */
+.snippet-view {
+  margin: 0;
+  padding: 16px;
+  border-radius: 8px;
+  background: #0f172a;
+  color: #e2e8f0;
+  font-family: 'JetBrains Mono', 'Consolas', monospace;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+
 .welcome {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
+  padding-top: 20px;
+}
+
+.welcome-hero {
   text-align: center;
-  padding-top: 60px;
+  padding: 24px 24px 12px;
+  margin-bottom: 24px;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.08), rgba(14, 165, 233, 0.06));
 }
 
-.welcome h1 {
-  font-size: 32px;
-  margin-bottom: 16px;
+.welcome-hero h2 {
+  margin-bottom: 12px;
 }
 
-.welcome p {
+.welcome-hero p {
   font-size: 16px;
   color: var(--text-secondary);
-  margin-bottom: 40px;
+  margin-bottom: 16px;
+  max-width: 820px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.welcome-section {
+  margin-bottom: 28px;
+}
+
+.welcome-section-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 14px;
+  color: var(--text-primary);
+}
+
+.welcome-path {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.path-card {
+  text-align: left;
+  border-radius: 14px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  min-height: 160px;
 }
 
 .welcome-categories {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 16px;
   text-align: left;
 }
 
 .welcome-card {
-  padding: 20px;
+  height: 100%;
+  overflow: hidden;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 10px;
+  border-radius: 14px;
   cursor: pointer;
   transition: all 0.3s;
 }
 
 .welcome-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-color: var(--color-primary, #4F46E5);
 }
 
-.welcome-card h3 {
-  font-size: 16px;
+.welcome-card-icon {
+  margin-bottom: 12px;
+}
+
+.welcome-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   margin-bottom: 8px;
+}
+
+.welcome-card-head h4 {
+  margin-bottom: 0 !important;
+}
+
+.welcome-card-desc {
+  min-height: 54px;
+  color: var(--text-secondary);
+}
+
+.welcome-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.sidebar-category-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+}
+
+.sidebar-category-count {
+  font-size: 12px;
+  color: var(--text-secondary);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  padding: 1px 8px;
 }
 
 .welcome-card .skill-count {
@@ -212,13 +325,13 @@ body {
   color: var(--text-secondary);
 }
 
-/* 响应式 */
 @media (max-width: 768px) {
   .app-sider {
     width: 200px !important;
     max-width: 200px !important;
     flex: 0 0 200px !important;
   }
+
   .welcome-categories {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }

@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Menu } from 'antd';
 import { Html5Outlined, FileTextOutlined, JavaScriptOutlined, CodeOutlined, Html5Filled, FileTextFilled, CodeFilled, BugOutlined } from '@ant-design/icons';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -13,24 +13,36 @@ const iconMap = {
   vue2: <Html5Filled style={{ fontSize: 18, color: '#42B883' }} />,
   vue3: <Html5Filled style={{ fontSize: 18, color: '#42B883' }} />,
   react: <CodeOutlined style={{ fontSize: 18, color: '#61DAFB' }} />,
+  node: <CodeOutlined style={{ fontSize: 18, color: '#8B5CF6' }} />,
+  engineering: <FileTextOutlined style={{ fontSize: 18, color: '#F97316' }} />,
+  browser: <BugOutlined style={{ fontSize: 18, color: '#0EA5E9' }} />,
+  network: <FileTextOutlined style={{ fontSize: 18, color: '#10B981' }} />,
+  algorithm: <CodeOutlined style={{ fontSize: 18, color: '#EC4899' }} />,
+  interview: <CodeFilled style={{ fontSize: 18, color: '#6366F1' }} />
 };
+
 const defaultIcon = <BugOutlined />;
 
 export default function Sidebar() {
-  var navigate = useNavigate();
-  var { skillId } = useParams();
-  var { setCurrentSkill } = useApp();
+  const navigate = useNavigate();
+  const { skillId } = useParams();
+  const { setCurrentSkill } = useApp();
 
-  var handleClick = function(info) {
+  const handleClick = function(info) {
     setCurrentSkill(info.key);
     navigate('/skill/' + info.key);
   };
 
-  var menuItems = skillCategories.map(function(cat) {
+  const menuItems = skillCategories.map(function(cat) {
     return {
       key: cat.key,
       icon: iconMap[cat.key] || defaultIcon,
-      label: cat.label,
+      label: (
+        <span className='sidebar-category-label'>
+          <span>{cat.label}</span>
+          <span className='sidebar-category-count'>{cat.skills.length}</span>
+        </span>
+      ),
       children: cat.skills.map(function(skill) {
         return { key: skill.id, label: skill.title };
       })
