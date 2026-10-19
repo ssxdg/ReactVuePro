@@ -10,7 +10,7 @@
 - **React Router** 支持知识点深链访问
 - **双主题切换** 浅色/深色模式
 
-入口路由为 `/#/`；学习页为 `/#/learning`，SSE 页面为 `/#/sse`。`npm run dev` 同时启动 Vite（3000）和 Node SSE 模拟服务（3001），打开 SSE 页面即可看到模拟消息；也可单独运行 `npm run sse`。
+入口路由为 `/#/`；学习页为 `/#/learning`，SSE 页面为 `/#/sse`。`npm run dev` 同时启动 Vite（3000）和 Node SSE 模拟服务（3001）；在 SSE 页面点击“开始”，服务会分段推送文章并在完成后停止。也可单独运行 `npm run sse`。
 
 ## 快速开始
 
