@@ -49,6 +49,52 @@ function GuideCard({ title, children }) {
   );
 }
 
+function TeachingDetail({ detail }) {
+  if (!detail) return null;
+
+  return (
+    <div className='skill-section'>
+      <h3>系统解读与示例说明</h3>
+      <div className='teaching-overview'>
+        {renderList(detail.beginnerReading, '暂无小白解读')}
+      </div>
+
+      <div className='explanation-grid'>
+        {(detail.explanation || []).map(function(block, index) {
+          return (
+            <div key={index} className='explanation-card'>
+              <div className='explanation-index'>{index + 1}</div>
+              <div>
+                <h4>{block.title}</h4>
+                <p>{block.content}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {detail.exampleGuide && (
+        <div className='example-guide'>
+          <div className='example-guide-head'>
+            <h4>{detail.exampleGuide.title}</h4>
+            <p>{detail.exampleGuide.description}</p>
+          </div>
+          <div className='example-guide-grid'>
+            <div>
+              <p className='example-guide-label'>练习步骤</p>
+              {renderList(detail.exampleGuide.steps, '暂无练习步骤')}
+            </div>
+            <div>
+              <p className='example-guide-label'>代码阅读重点</p>
+              {renderList(detail.exampleGuide.codeNotes, '暂无代码说明')}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function renderQaList(items, emptyText) {
   if (!items || items.length === 0) {
     return <Text type='secondary'>{emptyText}</Text>;
@@ -119,9 +165,11 @@ export default function SkillDetail({ skillId }) {
         )}
       </div>
 
+      <TeachingDetail detail={skill.teachingDetail} />
+
       {skill.studyGuide && (
         <div className='skill-section'>
-          <h3>📚 详细讲解</h3>
+          <h3>详细讲解</h3>
           <div className='guide-grid'>
             <GuideCard title='它是什么'>
               <Paragraph>{skill.studyGuide.overview}</Paragraph>
@@ -146,27 +194,27 @@ export default function SkillDetail({ skillId }) {
       )}
 
       <div className='skill-section'>
-        <h3>🎯 学习目标</h3>
+        <h3>学习目标</h3>
         {renderList(skill.learningGoals, '当前知识点尚未补全学习目标')}
       </div>
 
       <div className='skill-section'>
-        <h3>🧩 前置知识</h3>
+        <h3>前置知识</h3>
         {renderList(skill.prerequisites, '暂无前置知识说明')}
       </div>
 
       <div className='skill-section'>
-        <h3>💡 关键知识点</h3>
+        <h3>关键知识点</h3>
         {renderList(skill.keyPoints, '暂无关键知识点')}
       </div>
 
       <div className='skill-section'>
-        <h3>⚠️ 常见误区</h3>
+        <h3>常见误区</h3>
         {renderList(skill.misconceptions, '暂无常见误区')}
       </div>
 
       <div className='skill-section'>
-        <h3>✍️ 练习建议</h3>
+        <h3>练习建议</h3>
         {skill.practices && skill.practices.length > 0 ? (
           skill.practices.map(function(practice, index) {
             return (
@@ -182,17 +230,17 @@ export default function SkillDetail({ skillId }) {
       </div>
 
       <div className='skill-section'>
-        <h3>📝 自测题</h3>
+        <h3>自测题</h3>
         {renderQaList(skill.quiz, '暂无自测题')}
       </div>
 
       <div className='skill-section'>
-        <h3>🎤 面试追问</h3>
+        <h3>面试追问</h3>
         {renderQaList(skill.interviewQuestions, '暂无面试追问')}
       </div>
 
       <div className='skill-section'>
-        <h3>🔗 扩展阅读</h3>
+        <h3>扩展阅读</h3>
         {skill.refs && skill.refs.length > 0 ? (
           <ul className='key-points-list'>
             {skill.refs.map(function(ref, index) {
@@ -212,13 +260,13 @@ export default function SkillDetail({ skillId }) {
 
       {skill.nextSkills && skill.nextSkills.length > 0 && (
         <div className='skill-section'>
-          <h3>➡️ 下一步推荐</h3>
+          <h3>下一步推荐</h3>
           {renderList(skill.nextSkills, '暂无下一步推荐')}
         </div>
       )}
 
       <div className='skill-section'>
-        <h3>💻 在线练习</h3>
+        <h3>在线练习</h3>
         {isSnippet ? (
           <SnippetView snippet={skill.snippet} />
         ) : (
@@ -247,7 +295,7 @@ export default function SkillDetail({ skillId }) {
               />
             </div>
             <div className='skill-section'>
-              <h3>👁️ 预览效果</h3>
+              <h3>预览效果</h3>
               <div className='preview-pane'>
                 <PreviewPane html={code.html} css={code.css} js={code.js} />
               </div>

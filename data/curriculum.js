@@ -318,6 +318,36 @@ function defaultSnippet(module, item) {
   };
 }
 
+function defaultBrowserCode(module, item, guide) {
+  return {
+    html: `<section class="lesson-demo">
+  <p class="eyebrow">${module.label} 示例</p>
+  <h1>${item.title}</h1>
+  <p>${item.description}</p>
+  <ul>
+    <li>先理解它解决什么问题</li>
+    <li>再观察它在页面里的表现</li>
+    <li>最后尝试修改代码验证结论</li>
+  </ul>
+  <button id="demoBtn">查看学习提示</button>
+  <p id="demoOutput" class="demo-output">点击按钮开始互动</p>
+</section>`,
+    css: `.lesson-demo{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;max-width:560px;margin:0 auto;padding:28px;border:1px solid #ddd;border-radius:12px;background:#fff;box-shadow:0 10px 28px rgba(15,23,42,.08)}
+.eyebrow{margin:0 0 8px;color:#4F46E5;font-size:13px;font-weight:700}
+h1{margin:0 0 12px;color:#111827;font-size:28px}
+p,li{color:#4b5563;line-height:1.8}
+ul{padding-left:20px}
+button{margin-top:12px;padding:10px 16px;border:0;border-radius:8px;background:#4F46E5;color:#fff;cursor:pointer}
+button:hover{background:#4338ca}
+.demo-output{margin-top:14px;padding:12px;border-radius:8px;background:#f5f3ff;color:#312e81}`,
+    js: `var btn = document.getElementById('demoBtn');
+var output = document.getElementById('demoOutput');
+btn.onclick = function() {
+  output.textContent = '${item.title} 的学习重点：${guide.focus}。先读懂概念，再改动示例代码，最后用自己的话复述。';
+};`
+  };
+}
+
 function buildStudyGuide(module, item) {
   const focusMap = {
     html: '文档结构、语义化、表单、可访问性',
@@ -357,6 +387,53 @@ function buildStudyGuide(module, item) {
   ];
 
   return { focus, overview, howToUse, studySteps, pitfalls, practicePath, interviewFocus };
+}
+
+function buildTeachingDetail(module, item, guide) {
+  const title = item.title;
+  const label = module.label;
+  const focus = guide.focus;
+
+  return {
+    beginnerReading: [
+      `一句话理解：${title} 是 ${label} 体系里用来处理“${focus}”相关问题的基础能力。`,
+      `小白学习时不要先背 API，应该先判断它解决的问题、出现的场景、输入输出和失败边界。`,
+      `掌握标准是：能看懂示例、能改动示例、能独立写一个最小版本，并能说清为什么这样写。`
+    ],
+    explanation: [
+      {
+        title: '它解决什么问题',
+        content: `${title} 的价值在于把 ${focus} 里的常见问题变成一套可复用的写法或判断规则。学习它时，要先知道没有它会遇到什么麻烦，再理解它提供了什么能力。`
+      },
+      {
+        title: '核心工作方式',
+        content: `${title} 通常由概念、语法、运行环境和边界条件共同组成。真正要掌握的不是单个写法，而是每一步为什么存在、改变某个条件后结果会如何变化。`
+      },
+      {
+        title: '真实使用场景',
+        content: `当项目里出现 ${focus} 相关需求时，就可以考虑使用 ${title}。例如页面结构组织、交互逻辑封装、状态流转、性能优化、工程规范或面试表达，都需要先判断场景再选择方案。`
+      },
+      {
+        title: '学习验收标准',
+        content: `完成本知识点后，至少要能做到三件事：用自己的话解释 ${title}，基于示例改出一个可运行结果，并指出一个常见错误或不适用场景。`
+      }
+    ],
+    exampleGuide: {
+      title: `${title} 示例拆解`,
+      description: `下面的示例不是让你照抄，而是帮助你观察 ${title} 在真实代码中的位置。建议先运行，再逐行修改，最后关闭参考自己重写。`,
+      steps: [
+        `先找到示例中和 ${title} 直接相关的代码。`,
+        '修改一个最小参数或样式，观察预览区发生什么变化。',
+        '故意制造一个错误，再根据页面表现或控制台信息定位原因。',
+        `把示例改造成一个更贴近业务的小功能，确认自己真正理解 ${title}。`
+      ],
+      codeNotes: [
+        'HTML 负责结构，先看页面上有哪些元素。',
+        'CSS 负责表现，重点观察布局、颜色、间距和状态变化。',
+        'JavaScript 负责行为，重点看事件、数据变化和结果输出。'
+      ]
+    }
+  };
 }
 
 function buildAnswerText(module, item, guide, type, index) {
@@ -409,6 +486,7 @@ function buildSkill(module, item) {
   const base = existingSkillContent[item.id];
   const lesson = module.key === 'html' ? htmlLessons[item.id] : null;
   const guide = buildStudyGuide(module, item);
+  const teachingDetail = buildTeachingDetail(module, item, guide);
   const questionBank = buildQuestionBank(module, item, guide);
   const common = {
     moduleKey: module.key,
@@ -440,17 +518,18 @@ function buildSkill(module, item) {
     nextSkills: item.nextSkills || [],
     detail: lesson?.detail || (base && base.detail ? base.detail : `${guide.overview}\n\n${guide.howToUse}\n\n${guide.studySteps.join('\n')}`),
     studyGuide: guide,
+    teachingDetail,
     snippet: lesson?.snippet || defaultSnippet(module, item)
   };
 
   if (!base) {
     return Object.assign({}, common, {
-      code: module.playground === 'browser' ? { html: '<h1>Hello</h1>', css: 'h1{color:#4F46E5}', js: '' } : common.snippet
+      code: module.playground === 'browser' ? defaultBrowserCode(module, item, guide) : common.snippet
     });
   }
 
   return Object.assign({}, base, common, {
-    code: base.code || (module.playground === 'browser' ? { html: '<h1>Hello</h1>', css: 'h1{color:#4F46E5}', js: '' } : common.snippet)
+    code: base.code || (module.playground === 'browser' ? defaultBrowserCode(module, item, guide) : common.snippet)
   });
 }
 
