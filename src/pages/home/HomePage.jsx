@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Switch, Typography } from 'antd';
-import { BookOutlined, ApiOutlined, ArrowRightOutlined, MoonOutlined, SunOutlined } from '@ant-design/icons';
+import { BookOutlined, ApiOutlined, ArrowRightOutlined, MoonOutlined, SunOutlined, SwapOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
 import './HomePage.css';
@@ -20,7 +20,7 @@ export default function HomePage() {
         <div className='home-intro'>
           <span className='home-eyebrow'>选择学习方向</span>
           <Title>从这里开始探索</Title>
-          <Paragraph>进入前端技能学习，或打开 SSE 协议页面观察实时消息。</Paragraph>
+          <Paragraph>选择前端技能学习，或动手体验 SSE 与 WebSocket 实时通信。</Paragraph>
         </div>
         <div className='home-options'>
           <Link to='/learning' className='home-option'>
@@ -37,6 +37,14 @@ export default function HomePage() {
               <Title level={3}>SSE 协议</Title>
               <Paragraph>了解 Server-Sent Events，并连接服务端事件流查看消息。</Paragraph>
               <span className='home-card-link'>进入 SSE <ArrowRightOutlined /></span>
+            </Card>
+          </Link>
+          <Link to='/websocket' className='home-option'>
+            <Card className='home-card'>
+              <SwapOutlined className='home-card-icon' />
+              <Title level={3}>WebSocket</Title>
+              <Paragraph>建立双向连接，发送文字并观察服务端回显与主动推送。</Paragraph>
+              <span className='home-card-link'>进入 WebSocket <ArrowRightOutlined /></span>
             </Card>
           </Link>
         </div>

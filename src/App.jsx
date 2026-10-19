@@ -7,6 +7,7 @@ import HomePage from './pages/home/HomePage';
 import LearningPage, { LearningHome } from './pages/learning/LearningPage';
 import SkillPage from './pages/skill/SkillPage';
 import SsePage from './pages/sse/SsePage';
+import WebSocketPage from './pages/websocket/WebSocketPage';
 import './App.css';
 
 function LegacySkillRedirect() {
@@ -35,6 +36,7 @@ function AppWithTheme() {
           </Route>
           <Route path='/skill/:skillId' element={<LegacySkillRedirect />} />
           <Route path='/sse' element={<SsePage />} />
+          <Route path='/websocket' element={<WebSocketPage />} />
           <Route path='*' element={<Navigate to='/' replace />} />
         </Routes>
       </div>

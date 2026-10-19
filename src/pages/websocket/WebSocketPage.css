@@ -1,0 +1,30 @@
+.websocket-page { max-width: 1200px; min-height: 100vh; margin: 0 auto; padding: 32px clamp(20px, 4vw, 48px) 64px; }
+.websocket-back { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 40px; }
+.websocket-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 32px; }
+.websocket-heading h1 { margin: 8px 0 12px !important; }
+.websocket-heading p { max-width: 750px; color: var(--text-secondary); }
+.websocket-heading > .ant-tag { margin-top: 8px; white-space: nowrap; }
+.websocket-grid, .websocket-guide { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.websocket-guide { margin-top: 20px; }
+.websocket-card { min-width: 0; border-color: var(--border-color); background: var(--bg-card); }
+.websocket-card code { overflow-wrap: anywhere; }
+.websocket-send { display: flex; gap: 8px; margin-top: 20px; }
+.websocket-send .ant-input { min-width: 0; }
+.websocket-error { margin-top: 20px; }
+.websocket-tip { margin: 20px 0 0 !important; color: var(--text-secondary); }
+.websocket-log .ant-card-body { max-height: 320px; overflow-y: auto; }
+.websocket-empty { padding: 64px 8px; color: var(--text-secondary); text-align: center; }
+.websocket-log ul { margin: 0; padding: 0; list-style: none; }
+.websocket-log li { display: flex; align-items: flex-start; gap: 8px; padding: 10px 0; border-bottom: 1px solid var(--border-color); overflow-wrap: anywhere; }
+.websocket-log li:last-child { border-bottom: 0; }
+.websocket-log .ant-tag { flex: none; }
+.websocket-guide ul, .websocket-guide ol { padding-left: 20px; line-height: 1.8; }
+.websocket-guide li + li { margin-top: 10px; }
+.websocket-code { margin: 16px 0 0; padding: 16px; overflow-x: auto; border-radius: 8px; background: var(--code-bg); font-family: 'JetBrains Mono', Consolas, monospace; font-size: 12px; line-height: 1.7; }
+@media (max-width: 800px) {
+  .websocket-grid, .websocket-guide { grid-template-columns: 1fr; }
+  .websocket-back { margin-bottom: 24px; }
+}
+@media (max-width: 480px) {
+  .websocket-heading { flex-direction: column; gap: 4px; }
+}

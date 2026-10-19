@@ -1,16 +1,21 @@
 import { createServer as createViteServer } from 'vite';
 import { startSseServer } from './sse-server.js';
+import { startWebSocketServer } from './websocket-server.js';
 
 async function start() {
   const sseServer = await startSseServer();
+  let websocketServer;
   try {
+    websocketServer = await startWebSocketServer();
     const vite = await createViteServer({ server: { host: '127.0.0.1' } });
     await vite.listen();
     vite.printUrls();
 
-    // 开发进程退出时同时关闭两个服务，防止 SSE 端口继续被旧进程占用。
+    // 开发进程退出时释放页面、SSE 和 WebSocket 服务及已建立的连接。
     const shutdown = async () => {
       await vite.close();
+      for (const client of websocketServer.clients) client.terminate();
+      websocketServer.close();
       sseServer.closeAllConnections();
       sseServer.close();
       process.exit(0);
@@ -18,6 +23,10 @@ async function start() {
     process.once('SIGINT', shutdown);
     process.once('SIGTERM', shutdown);
   } catch (error) {
+    if (websocketServer) {
+      for (const client of websocketServer.clients) client.terminate();
+      websocketServer.close();
+    }
     sseServer.closeAllConnections();
     sseServer.close();
     throw error;

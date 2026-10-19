@@ -1,6 +1,6 @@
 ﻿# 前端技能训练平台 (Frontend Skills Trainer)
 
-一个面向前端开发工程师的交互式技能训练平台。入口页可选择前端学习或 SSE 协议页面；学习模块提供知识讲解、在线代码编辑和实时预览，SSE 页面支持连接事件流并查看实时消息。
+一个面向前端开发工程师的交互式技能训练平台。入口页可选择前端学习、SSE 或 WebSocket；学习模块提供知识讲解、在线代码编辑和实时预览，协议页面提供本地连接演示。
 
 ## 技术栈
 
@@ -10,7 +10,7 @@
 - **React Router** 支持知识点深链访问
 - **双主题切换** 浅色/深色模式
 
-入口路由为 `/#/`；学习页为 `/#/learning`，SSE 页面为 `/#/sse`。`npm run dev` 同时启动 Vite（3000）和 Node SSE 模拟服务（3001）；在 SSE 页面点击“开始”，服务会分段推送文章并在完成后停止。也可单独运行 `npm run sse`。
+入口路由为 `/#/`；学习页为 `/#/learning`，SSE 页面为 `/#/sse`，WebSocket 页面为 `/#/websocket`。`npm run dev` 同时启动 Vite（3000）、SSE 服务（3001）和 WebSocket 服务（3002）。也可单独运行 `npm run sse` 或 `npm run websocket`。
 
 ## 快速开始
 
@@ -35,7 +35,7 @@ E:\LLM\ReactVuePro\
 ├── index.html                # 入口 HTML
 ├── package.json              # 依赖配置
 ├── vite.config.js            # Vite 配置
-├── server/                   # Node SSE 模拟服务及开发启动入口
+├── server/                   # Node SSE、WebSocket 模拟服务及开发启动入口
 ├── src/
 │   ├── main.jsx              # 应用入口
 │   ├── App.jsx               # 根组件与路由
@@ -47,7 +47,8 @@ E:\LLM\ReactVuePro\
 │   │   ├── home/             # 入口页 JSX 与 CSS
 │   │   ├── learning/         # 学习首页、布局、侧栏及 CSS
 │   │   ├── skill/            # 知识点页、编辑器、预览及 CSS
-│   │   └── sse/              # SSE 协议页 JSX 与 CSS
+│   │   ├── sse/              # SSE 协议页 JSX 与 CSS
+│   │   └── websocket/        # WebSocket 协议页 JSX 与 CSS
 ├── data/
 │   ├── skillsData.js         # 38 个技能知识点数据
 │   └── skillEnhancements.js  # 学习目标/练习建议/扩展阅读
