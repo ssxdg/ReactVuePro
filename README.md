@@ -1,6 +1,6 @@
 ﻿# 前端技能训练平台 (Frontend Skills Trainer)
 
-一个面向前端开发工程师的交互式技能训练平台，涵盖 HTML、CSS、JavaScript、TypeScript、Vue2、Vue3、React 七大类别 38 个技能点，提供知识讲解 + 在线代码编辑 + 实时预览的完整学习闭环。
+一个面向前端开发工程师的交互式技能训练平台。入口页可选择前端学习或 SSE 协议页面；学习模块提供知识讲解、在线代码编辑和实时预览，SSE 页面支持连接事件流并查看实时消息。
 
 ## 技术栈
 
@@ -9,6 +9,8 @@
 - **Monaco Editor** VS Code 同款代码编辑器
 - **React Router** 支持知识点深链访问
 - **双主题切换** 浅色/深色模式
+
+入口路由为 `/#/`；学习页为 `/#/learning`，SSE 页面为 `/#/sse`。`npm run dev` 同时启动 Vite（3000）和 Node SSE 模拟服务（3001），打开 SSE 页面即可看到模拟消息；也可单独运行 `npm run sse`。
 
 ## 快速开始
 
@@ -33,19 +35,19 @@ E:\LLM\ReactVuePro\
 ├── index.html                # 入口 HTML
 ├── package.json              # 依赖配置
 ├── vite.config.js            # Vite 配置
+├── server/                   # Node SSE 模拟服务及开发启动入口
 ├── src/
 │   ├── main.jsx              # 应用入口
-│   ├── App.jsx               # 根组件（路由 + 布局）
+│   ├── App.jsx               # 根组件与路由
 │   ├── App.css               # 全局样式
 │   ├── theme.js              # Ant Design 主题配置
 │   ├── context/
 │   │   └── AppContext.jsx    # 全局状态（主题/当前技能）
-│   └── components/
-│       ├── Sidebar.jsx       # 左侧技能导航树
-│       ├── SkillDetail.jsx   # 技能详情 + 练习区
-│       ├── CodeEditor.jsx    # Monaco 代码编辑器
-│       ├── PreviewPane.jsx   # 实时预览 iframe
-│       └── Welcome.jsx       # 首页欢迎页
+│   ├── pages/
+│   │   ├── home/             # 入口页 JSX 与 CSS
+│   │   ├── learning/         # 学习首页、布局、侧栏及 CSS
+│   │   ├── skill/            # 知识点页、编辑器、预览及 CSS
+│   │   └── sse/              # SSE 协议页 JSX 与 CSS
 ├── data/
 │   ├── skillsData.js         # 38 个技能知识点数据
 │   └── skillEnhancements.js  # 学习目标/练习建议/扩展阅读

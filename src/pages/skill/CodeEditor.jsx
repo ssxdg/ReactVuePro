@@ -1,6 +1,6 @@
 import React, { useRef, useCallback } from 'react';
 import Editor, { loader } from '@monaco-editor/react';
-import { useApp } from '../context/AppContext';
+import { useApp } from '../../context/AppContext';
 
 loader.config({
   paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs' },

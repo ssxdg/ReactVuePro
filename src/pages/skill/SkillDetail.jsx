@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Typography, Tag, Tabs, Alert } from 'antd';
-import { getSkill, getCategoryBySkillId, getModuleBySkillId } from '../../data/skillsData';
+import { getSkill, getCategoryBySkillId, getModuleBySkillId } from '../../../data/skillsData';
 import CodeEditor from './CodeEditor';
 import PreviewPane from './PreviewPane';
 

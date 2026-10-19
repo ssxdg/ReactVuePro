@@ -1,9 +1,9 @@
 import React from 'react';
 import { Menu } from 'antd';
 import { Html5Outlined, FileTextOutlined, JavaScriptOutlined, CodeOutlined, Html5Filled, FileTextFilled, CodeFilled, BugOutlined } from '@ant-design/icons';
-import { useNavigate, useParams } from 'react-router-dom';
-import { skillCategories } from '../../data/skillsData';
-import { useApp } from '../context/AppContext';
+import { useMatch, useNavigate } from 'react-router-dom';
+import { skillCategories } from '../../../data/skillsData';
+import { useApp } from '../../context/AppContext';
 
 const iconMap = {
   html: <Html5Outlined style={{ fontSize: 18, color: '#E44D26' }} />,
@@ -25,12 +25,12 @@ const defaultIcon = <BugOutlined />;
 
 export default function Sidebar() {
   const navigate = useNavigate();
-  const { skillId } = useParams();
+  const skillId = useMatch('/learning/skill/:skillId')?.params.skillId;
   const { setCurrentSkill } = useApp();
 
   const handleClick = function(info) {
     setCurrentSkill(info.key);
-    navigate('/skill/' + info.key);
+    navigate('/learning/skill/' + info.key);
   };
 
   const menuItems = skillCategories.map(function(cat) {

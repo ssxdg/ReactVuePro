@@ -1,67 +1,45 @@
-﻿import React, { useMemo } from 'react';
-import { HashRouter, Routes, Route, useParams } from 'react-router-dom';
-import { ConfigProvider, Layout, Switch, theme as antTheme, Typography } from 'antd';
-import { SunOutlined, MoonOutlined } from '@ant-design/icons';
+import React, { useMemo } from 'react';
+import { HashRouter, Navigate, Route, Routes, useParams } from 'react-router-dom';
+import { ConfigProvider, theme as antTheme } from 'antd';
 import { AppProvider, useApp } from './context/AppContext';
 import { lightTheme, darkTheme, getCustomCSSVariables } from './theme';
-import Sidebar from './components/Sidebar';
-import SkillDetail from './components/SkillDetail';
-import Welcome from './components/Welcome';
-import { curriculumModules } from '../data/skillsData';
+import HomePage from './pages/home/HomePage';
+import LearningPage, { LearningHome } from './pages/learning/LearningPage';
+import SkillPage from './pages/skill/SkillPage';
+import SsePage from './pages/sse/SsePage';
 import './App.css';
 
-const { Header, Sider, Content } = Layout;
-const { Title } = Typography;
-
-function SkillPage() {
-  var { skillId } = useParams();
-  return <SkillDetail skillId={skillId} />;
-}
-
-function AppContent() {
-  const { isDark, toggleTheme } = useApp();
-  const cssVars = useMemo(() => getCustomCSSVariables(isDark), [isDark]);
-  const totalSkills = useMemo(() => curriculumModules.reduce(function(sum, module) {
-    return sum + module.skills.length;
-  }, 0), []);
-
-  return (
-    <div className='app-root' style={cssVars}>
-      <Layout className='app-layout'>
-        <Header className='app-header'>
-          <div className='header-left'>
-            <Title level={4} className='header-title'>前端技能训练平台 · {curriculumModules.length} 模块 / {totalSkills} 知识点</Title>
-          </div>
-          <div className='header-right'>
-            <Switch checked={isDark} onChange={toggleTheme} checkedChildren={<MoonOutlined />} unCheckedChildren={<SunOutlined />} />
-          </div>
-        </Header>
-        <Layout>
-          <Sider width={280} className='app-sider' theme={isDark ? 'dark' : 'light'}>
-            <Sidebar />
-          </Sider>
-          <Content className='app-content'>
-            <Routes>
-              <Route path='/' element={<Welcome />} />
-              <Route path='/skill/:skillId' element={<SkillPage />} />
-            </Routes>
-          </Content>
-        </Layout>
-      </Layout>
-    </div>
-  );
+function LegacySkillRedirect() {
+  const { skillId } = useParams();
+  // 兼容旧版知识点深链，避免目录调整后已保存的链接失效。
+  return <Navigate to={'/learning/skill/' + skillId} replace />;
 }
 
 function AppWithTheme() {
-  var isDark = useApp().isDark;
-  var themeConfig = useMemo(function() {
-    return {
-      algorithm: isDark ? antTheme.darkAlgorithm : antTheme.defaultAlgorithm,
-      token: isDark ? darkTheme.token : lightTheme.token,
-      components: isDark ? darkTheme.components : lightTheme.components
-    };
-  }, [isDark]);
-  return <ConfigProvider theme={themeConfig}><AppContent /></ConfigProvider>;
+  const { isDark } = useApp();
+  const cssVars = useMemo(() => getCustomCSSVariables(isDark), [isDark]);
+  const themeConfig = useMemo(() => ({
+    algorithm: isDark ? antTheme.darkAlgorithm : antTheme.defaultAlgorithm,
+    token: isDark ? darkTheme.token : lightTheme.token,
+    components: isDark ? darkTheme.components : lightTheme.components
+  }), [isDark]);
+
+  return (
+    <ConfigProvider theme={themeConfig}>
+      <div className='app-root' style={cssVars}>
+        <Routes>
+          <Route path='/' element={<HomePage />} />
+          <Route path='/learning' element={<LearningPage />}>
+            <Route index element={<LearningHome />} />
+            <Route path='skill/:skillId' element={<SkillPage />} />
+          </Route>
+          <Route path='/skill/:skillId' element={<LegacySkillRedirect />} />
+          <Route path='/sse' element={<SsePage />} />
+          <Route path='*' element={<Navigate to='/' replace />} />
+        </Routes>
+      </div>
+    </ConfigProvider>
+  );
 }
 
 export default function App() {

@@ -1,10 +1,37 @@
 import React from 'react';
-import { Card, Typography, Row, Col, Tag, Space, Button } from 'antd';
-import { Html5Outlined, FileTextOutlined, JavaScriptOutlined, CodeOutlined, ApiOutlined, ThunderboltOutlined, ExperimentOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
-import { curriculumModules } from '../../data/skillsData';
+import { Card, Typography, Row, Col, Tag, Space, Button, Layout, Switch } from 'antd';
+import { Html5Outlined, FileTextOutlined, JavaScriptOutlined, CodeOutlined, ApiOutlined, ThunderboltOutlined, ExperimentOutlined, HomeOutlined, MoonOutlined, SunOutlined } from '@ant-design/icons';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { curriculumModules } from '../../../data/skillsData';
+import { useApp } from '../../context/AppContext';
+import Sidebar from './Sidebar';
+import './LearningPage.css';
 
 const { Title, Paragraph } = Typography;
+const { Header, Sider, Content } = Layout;
+
+export default function LearningPage() {
+  const { isDark, toggleTheme } = useApp();
+  const totalSkills = curriculumModules.reduce((sum, module) => sum + module.skills.length, 0);
+
+  return (
+    <Layout className='app-layout'>
+      <Header className='app-header'>
+        <div className='header-left'>
+          <Link to='/' className='learning-back' aria-label='返回入口页'><HomeOutlined /> <span>入口</span></Link>
+          <Title level={4} className='header-title'>前端技能训练平台 · {curriculumModules.length} 模块 / {totalSkills} 知识点</Title>
+        </div>
+        <div className='header-right'>
+          <Switch checked={isDark} onChange={toggleTheme} checkedChildren={<MoonOutlined />} unCheckedChildren={<SunOutlined />} aria-label='切换深色模式' />
+        </div>
+      </Header>
+      <Layout className='learning-body'>
+        <Sider width={280} className='app-sider' theme={isDark ? 'dark' : 'light'}><Sidebar /></Sider>
+        <Content className='app-content'><Outlet /></Content>
+      </Layout>
+    </Layout>
+  );
+}
 
 const iconMap = {
   html: <Html5Outlined style={{ fontSize: 30, color: '#E44D26' }} />,
@@ -24,7 +51,7 @@ const iconMap = {
 
 const phaseOrder = ['基础', '进阶', '扩展', '面试'];
 
-export default function Welcome() {
+export function LearningHome() {
   const navigate = useNavigate();
   const totalSkills = curriculumModules.reduce(function(sum, module) {
     return sum + module.skills.length;
@@ -77,7 +104,7 @@ export default function Welcome() {
                 <Card
                   hoverable
                   onClick={function() {
-                    navigate('/skill/' + module.skills[0].id);
+                    navigate('/learning/skill/' + module.skills[0].id);
                   }}
                   className='welcome-card'
                 >

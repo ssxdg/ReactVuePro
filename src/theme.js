@@ -48,6 +48,7 @@ export const darkTheme = {
 };
 
 export const getCustomCSSVariables = (isDark) => ({
+  '--color-primary': isDark ? '#818CF8' : '#4F46E5',
   '--bg-primary': isDark ? '#1a1a1a' : '#f5f5f5',
   '--bg-secondary': isDark ? '#141414' : '#ffffff',
   '--bg-card': isDark ? '#1f1f1f' : '#ffffff',
